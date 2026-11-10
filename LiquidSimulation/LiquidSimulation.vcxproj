@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1FE68D8A-49EE-D067-3F6D-E9F3759349AC}</ProjectGuid>
+    <RootNamespace>LiquidSimulation</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 13.5.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\DHZ\Documents\GitHub\LiquidSimulation\x64\Debug;$(SolutionDir)..\VulkanEngineCore\x64\Debug;$(SolutionDir)..\VulkanGameEngine\External\ktx\include;$(SolutionDir)..\VulkanEngineCore\External\glfw\include\GLFW;$(SolutionDir)..\VulkanEngineCore\VulkanEngineCore;$(SolutionDir)..\VulkanEngineCore\External\imgui;$(SolutionDir)..\VulkanEngineCore\External\imgui\backends;$(SolutionDir)..\VulkanEngineCore\External\glfw\include;$(SolutionDir)..\VulkanEngineCore\External\VulkanMemoryAllocator\include;$(SolutionDir)..\VulkanEngineCore\External\SPIRV-Reflect;$(SolutionDir)..\VulkanEngineCore\External\json\include;$(SolutionDir)..\VulkanGameEngine\VulkanEngineDLL;$(SolutionDir)External;$(SolutionDir)External\lua\src;$(SolutionDir)External\sol2\include;$(SolutionDir)External\xxHash;$(SolutionDir)External\entt\src;$(SolutionDir)External\stb;$(SolutionDir)External\glm;$(SolutionDir)External\LodePNG;$(SolutionDir)packages\freetype.2.8.0.1\build\native\include;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.26\runtimes\win-x64\native;C:\VulkanSDK\1.4.328.1\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\VulkanGameEngine\x64\Debug;$(SolutionDir)..\VulkanEngineCore\x64\Debug;$(SolutionDir)x64\Debug;$(SolutionDir)packages\freetype.2.8.0.1\build\native\lib\x64\v141\static\Release;C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Host.win-x64\8.0.26\runtimes\win-x64\native;$(SolutionDir)External\lua\src;$(SolutionDir)External\ktx\Release;$(SolutionDir)..\VulkanEngineCore\External\glfw\src\Release;C:\VulkanSDK\1.4.328.1\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;VulkanEngineCore.lib;VulkanEngineDLL.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <AdditionalOptions>-std=c++20 -Xcompiler "/std:c++20" %(AdditionalOptions)</AdditionalOptions>
+    </CudaCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+    </CudaCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CudaCompile Include="CudaSystem.cu" />
+    <CudaCompile Include="Liquid.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FrameTimer.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SystemClock.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\VulkanEngineCore\External\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="CudaSystem.cuh" />
+    <ClInclude Include="FrameTimer.h" />
+    <ClInclude Include="Liquid.cuh" />
+    <ClInclude Include="SystemClock.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 13.5.targets" />
+  </ImportGroup>
+</Project>

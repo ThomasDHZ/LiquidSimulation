@@ -1,0 +1,36 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Assets/">
+    <File Path="EngineConfig.json" />
+  </Folder>
+  <Folder Name="/Assets/RenderPass/">
+    <File Path="Assets/RenderPass/HdrRenderPass.json" />
+  </Folder>
+  <Folder Name="/Assets/RenderPipeline/">
+    <File Path="Assets/RenderPipeline/HdrPipeline.json" />
+  </Folder>
+  <Folder Name="/Assets/Shaders/">
+    <File Path="Shaders/HdrShader.frag" />
+    <File Path="Shaders/HdrShader.vert" />
+    <File Path="Shaders/LiquidParticleShader.frag" />
+    <File Path="Shaders/LiquidParticleShader.vert" />
+  </Folder>
+  <Folder Name="/Assets/Shaders/Includes/">
+    <File Path="Shaders/BindlessHelpers.glsl" />
+    <File Path="Shaders/Constants.glsl" />
+    <File Path="Shaders/MaterialPropertiesBuffer.glsl" />
+    <File Path="Shaders/MemoryPoolBindings.glsl" />
+    <File Path="Shaders/MeshPropertiesBuffer.glsl" />
+  </Folder>
+  <Project Path="../VulkanEngineCore/VulkanEngineCore/VulkanEngineCore.vcxproj" Id="526bff96-6c33-482d-9bec-29a6d553f16a" />
+  <Project Path="../VulkanGameEngine/VulkanEngineDLL/VulkanEngineDLL.vcxproj" Id="d22b29fb-1f02-471c-81ac-a352862f6951">
+    <BuildDependency Project="../VulkanEngineCore/VulkanEngineCore/VulkanEngineCore.vcxproj" />
+  </Project>
+  <Project Path="LiquidSimulation/LiquidSimulation.vcxproj">
+    <BuildDependency Project="../VulkanEngineCore/VulkanEngineCore/VulkanEngineCore.vcxproj" />
+    <BuildDependency Project="../VulkanGameEngine/VulkanEngineDLL/VulkanEngineDLL.vcxproj" />
+  </Project>
+</Solution>

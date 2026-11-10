@@ -1,0 +1,251 @@
+MeshProperitiesBuffer GetMesh(uint index) 
+{
+    MeshProperitiesBuffer mesh;
+    if (index >= bindlessBuffer.MeshCount) 
+    {
+        mesh.MaterialIndex = 0u;
+        mesh.MeshLayerIndex = 0;
+        mesh.MeshTransform = mat4(1.0);
+        return mesh;
+    }
+
+    uint baseByteLocation = (uint(bindlessBuffer.MeshOffset - bindlessBuffer.MeshOffset) / 4) + (index * (bindlessBuffer.MeshSize / 4));
+    mesh.MaterialIndex = bindlessBuffer.Data[baseByteLocation++];
+    mesh.MeshLayerIndex = int(bindlessBuffer.Data[baseByteLocation++]);
+    mesh.MeshTransform = mat4(
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    return mesh;
+}
+
+PackedMaterial GetMaterial(uint index)
+{
+    PackedMaterial mat;
+    mat.AlbedoTextureId                                      = ~0u;
+    mat.NormalTextureId                                      = ~0u;
+    mat.MroTextureId                                         = ~0u;
+    mat.ClearCoatOrTranslucentTextureId                      = ~0u;
+    mat.SubSurfaceScatteringOrTranslucentPropertiesTextureId = ~0u;
+    mat.SubSurfaceScatteringPropertiesTextureId              = ~0u;
+    mat.SheenTextureId                                       = ~0u;
+    mat.AnisotropyTextureId                                  = ~0u;
+    mat.EmissionTextureId                                    = ~0u;
+    mat.ShadingModel                                         = ~0u;
+    mat.FeatureMask                                          = ~0u;
+    mat.ClearcoatTint                                        = vec3(0.0f);
+    mat.IOR                                                  = 0.0f;
+    mat.AlphaCutOff                                          = 0.0f;
+    if (index >= bindlessBuffer.MaterialCount) return mat;
+
+    uint offset                                              = (uint(bindlessBuffer.MaterialOffset - bindlessBuffer.MeshOffset) / 4u) + index * (bindlessBuffer.MaterialSize / 4u);
+    mat.AlbedoTextureId                                      = bindlessBuffer.Data[offset++];
+    mat.NormalTextureId                                      = bindlessBuffer.Data[offset++];
+    mat.MroTextureId                                         = bindlessBuffer.Data[offset++];
+    mat.ClearCoatOrTranslucentTextureId                      = bindlessBuffer.Data[offset++];
+    mat.SubSurfaceScatteringOrTranslucentPropertiesTextureId = bindlessBuffer.Data[offset++];
+    mat.SubSurfaceScatteringPropertiesTextureId              = bindlessBuffer.Data[offset++];
+    mat.SheenTextureId                                       = bindlessBuffer.Data[offset++];
+    mat.AnisotropyTextureId                                  = bindlessBuffer.Data[offset++];
+    mat.EmissionTextureId                                    = bindlessBuffer.Data[offset++];
+    mat.TranslucentTextureId                                 = bindlessBuffer.Data[offset++];
+    mat.TranslucentPropertiesTextureId                       = bindlessBuffer.Data[offset++];
+    mat.ShadingModel                                         = bindlessBuffer.Data[offset++];
+    mat.FeatureMask                                          = bindlessBuffer.Data[offset++];
+    mat.ClearcoatTint                                        = vec3(uintBitsToFloat(bindlessBuffer.Data[offset++]), uintBitsToFloat(bindlessBuffer.Data[offset++]), uintBitsToFloat(bindlessBuffer.Data[offset++]));
+    mat.IOR                                                  = uintBitsToFloat(bindlessBuffer.Data[offset++]);
+    mat.AlphaCutOff                                          = uintBitsToFloat(bindlessBuffer.Data[offset++]);
+    return mat;
+}
+
+DirectionalLightBuffer GetDirectionalLight(uint index) 
+{
+    DirectionalLightBuffer light;
+    if (index >= bindlessBuffer.DirectionalLightCount) 
+    {
+        light.LightColor       = vec3(0.0);
+        light.LightDirection   = vec3(0.0);
+        light.LightIntensity   = 0.0;
+        light.ShadowStrength   = 0.0;
+        light.ShadowBias       = 0.0;
+        light.ShadowSoftness   = 0.0;
+        light.LightActive      = 0;
+        light.LightSpaceMatrix = mat4(1.0f);
+        return light;
+    }
+
+    uint baseByteLocation  = (uint(bindlessBuffer.DirectionalLightOffset - bindlessBuffer.MeshOffset) / 4) + (index * (bindlessBuffer.DirectionalLightSize / 4));
+    light.LightColor       = vec3(uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    baseByteLocation++;
+    light.LightDirection   = vec3(uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    light.LightIntensity   = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.ShadowStrength   = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.ShadowBias       = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.ShadowSoftness   = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.LightActive      = bindlessBuffer.Data[baseByteLocation++];
+    light.LightSpaceMatrix = mat4(
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+        uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    return light;
+}
+
+PointLightBuffer GetPointLight(uint index) 
+{
+    PointLightBuffer light;
+    if (index >= bindlessBuffer.PointLightCount) 
+    {
+        light.LightPosition    = vec3(0.0);
+        light.LightColor       = vec3(0.0);
+        light.LightRadius      = 0.0;
+        light.LightIntensity   = 0.0;
+        light.ShadowStrength   = 0.0;
+        light.ShadowBias       = 0.0;
+        light.ShadowSoftness   = 0.0;
+        light.LightLayer       = 0;
+        light.LightActive      = 0;
+        for(int x = 0; x < 6; x++)
+        {
+            light.LightSpaceMatrix[x] = mat4(1.0f);
+        }
+        return light;
+    }
+
+    uint baseByteLocation  = (uint(bindlessBuffer.PointLightOffset - bindlessBuffer.MeshOffset) / 4) + (index * (bindlessBuffer.PointLightSize / 4));
+    light.LightPosition    = vec3(uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    baseByteLocation++;
+    light.LightColor       = vec3(uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    light.LightRadius      = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.LightIntensity   = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.ShadowStrength   = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.ShadowBias       = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.ShadowSoftness   = uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]);
+    light.LightLayer       = int(bindlessBuffer.Data[baseByteLocation++]);
+    light.LightActive      = bindlessBuffer.Data[baseByteLocation++];
+    baseByteLocation += 2;
+    for(int x = 0; x < 6; x++)
+    {
+        light.LightSpaceMatrix[x] = mat4(
+            uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+            uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+            uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]),
+            uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]), uintBitsToFloat(bindlessBuffer.Data[baseByteLocation++]));
+    }
+    return light;
+}
+
+TextureMetadata Get2DTextureMetadata(uint index)
+{
+    TextureMetadata textureMetaData;
+    if (index >= bindlessBuffer.Texture2DCount) 
+    {
+        textureMetaData.Width       = 0;
+        textureMetaData.Height      = 0;
+        textureMetaData.Depth       = 0;
+        textureMetaData.MipLevels   = 1;
+        textureMetaData.LayerCount  = 1;
+        textureMetaData.Format      = 0;
+        textureMetaData.TextureType = 0;
+        textureMetaData.ArrayIndex  = 0;
+        return textureMetaData;
+    }
+
+    uint baseByteLocation = (uint(bindlessBuffer.Texture2DOffset - bindlessBuffer.MeshOffset) / 4) + (index * (bindlessBuffer.Texture2DSize / 4));
+    textureMetaData.Width       = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Height      = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Depth       = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.MipLevels   = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.LayerCount  = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Format      = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.TextureType = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.ArrayIndex  = bindlessBuffer.Data[baseByteLocation++];
+    return textureMetaData;
+}
+
+TextureMetadata Get3DTextureMetadata(uint index)
+{
+    TextureMetadata textureMetaData;
+    if (index >= bindlessBuffer.Texture3DCount) 
+    {
+        textureMetaData.Width       = 0;
+        textureMetaData.Height      = 0;
+        textureMetaData.Depth       = 0;
+        textureMetaData.MipLevels   = 1;
+        textureMetaData.LayerCount  = 1;
+        textureMetaData.Format      = 0;
+        textureMetaData.TextureType = 0;
+        textureMetaData.ArrayIndex  = 0;
+        return textureMetaData;
+    }
+
+    uint baseByteLocation = (uint(bindlessBuffer.Texture3DOffset - bindlessBuffer.MeshOffset) / 4) + (index * (bindlessBuffer.Texture3DSize / 4));
+    textureMetaData.Width       = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Height      = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Depth       = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.MipLevels   = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.LayerCount  = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Format      = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.TextureType = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.ArrayIndex  = bindlessBuffer.Data[baseByteLocation++];
+    return textureMetaData;
+}
+
+TextureMetadata GetCubeMapTextureMetadata(uint index)
+{
+    TextureMetadata textureMetaData;
+    if (index >= bindlessBuffer.TextureCubeMapCount) 
+    {
+        textureMetaData.Width       = 0;
+        textureMetaData.Height      = 0;
+        textureMetaData.Depth       = 0;
+        textureMetaData.MipLevels   = 1;
+        textureMetaData.LayerCount  = 1;
+        textureMetaData.Format      = 0;
+        textureMetaData.TextureType = 0;
+        textureMetaData.ArrayIndex  = 0;
+        return textureMetaData;
+    }
+
+    uint baseByteLocation = (uint(bindlessBuffer.TextureCubeMapOffset - bindlessBuffer.MeshOffset) / 4) + (index * (bindlessBuffer.TextureCubeMapSize / 4));
+    textureMetaData.Width       = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Height      = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Depth       = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.MipLevels   = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.LayerCount  = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.Format      = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.TextureType = bindlessBuffer.Data[baseByteLocation++];
+    textureMetaData.ArrayIndex  = bindlessBuffer.Data[baseByteLocation++];
+    return textureMetaData;
+}
+
+vec2 OctahedronEncode(vec3 normal)
+{
+    vec2 f = normal.xy / (abs(normal.x) + abs(normal.y) + abs(normal.z));
+    return (normal.z < 0.0) ? (1.0 - abs(f.yx)) * sign(f) : f;
+}
+
+vec3 OctahedronDecode(vec2 f)
+{
+    vec3 n;
+    n.xy = f.xy;
+    n.z  = 1.0 - abs(f.x) - abs(f.y);
+    n.xy = (n.z < 0.0) ? (1.0 - abs(n.yx)) * sign(n.xy) : n.xy;
+    return normalize(n);
+}
+
+vec2 Unpack8bitPair(float packed)
+{
+    uint combined = uint(packed * 65535.0 + 0.5);
+    float high = float((combined >> 8) & 0xFFu) / 255.0;
+    float low  = float(combined & 0xFFu) / 255.0;
+    return vec2(high, low);
+}
+
+float Pack8bitPair(float high, float low)
+{
+    uint u_high = uint(high * 255.0 + 0.5) & 0xFFu;
+    uint u_low  = uint(low  * 255.0 + 0.5) & 0xFFu;
+    return float((u_high << 8) | u_low) / 65535.0;
+}

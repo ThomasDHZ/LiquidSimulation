@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemClock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{acf167af-567d-4489-b648-60c3a92b120f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{6eb9c4cd-7e5d-481e-bd7b-c7a883e13f93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External">
+      <UniqueIdentifier>{fba91bab-f0d0-4cbb-9175-b54608c2fca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cuda">
+      <UniqueIdentifier>{a9109f27-118c-43cb-83e5-c6be73aa1888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\External">
+      <UniqueIdentifier>{405ce030-ad82-46f8-a635-6af36d85ae7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Cuda">
+      <UniqueIdentifier>{b6e920bc-1175-45b4-ad70-98b190117c56}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="Liquid.cu">
+      <Filter>Source Files\Cuda</Filter>
+    </CudaCompile>
+    <CudaCompile Include="CudaSystem.cu">
+      <Filter>Source Files\Cuda</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FrameTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemClock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaSystem.cuh">
+      <Filter>Header Files\Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="Liquid.cuh">
+      <Filter>Header Files\Cuda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\VulkanEngineCore\External\imgui\backends\imgui_impl_glfw.h">
+      <Filter>Header Files\External</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
