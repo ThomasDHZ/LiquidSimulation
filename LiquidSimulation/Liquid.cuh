@@ -1,6 +1,8 @@
+#pragma once
 #include "MemorySystem.h"
 #include <cmath>
 #include <cuda_runtime.h>
+#include "CudaError.h"
 
 struct FluidParticle
 {
@@ -22,7 +24,7 @@ struct FluidParticleInstance
 	float Density = 0.0f;
 };
 
-__global__ void CreateFluidDataCuda(FluidParticle* fluidCellList, uint width, uint height);
-__global__ void UpdateFluidDataCuda(const FluidParticle* fluidParticleList, FluidParticleInstance* fluidParticleInstanceList, uint width, uint height);
-Vector<FluidParticle> CreateFluidData();
-Vector<FluidParticleInstance> CreateFluidInstanceData(const FluidParticle* fluidParticalListPtr);
+__global__ void Cuda_CreateFluidData(FluidParticle* fluidCellList, uint width, uint height);
+__global__ void Cuda_UpdateFluidData(const FluidParticle* fluidParticleList, FluidParticleInstance* fluidParticleInstanceList, uint width, uint height);
+FluidParticle* CreateFluidData(FluidParticle* fluidParticleGpuList);
+void UpdateFluidInstanceData(const FluidParticle* fluidParticaGpulListPtr, FluidParticleInstance* fluidParticleInstanceListPtr);

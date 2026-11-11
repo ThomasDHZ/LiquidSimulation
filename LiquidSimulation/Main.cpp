@@ -9,17 +9,17 @@
 #include <EngineConfigSystem.h>
 #include <LevelSystem.h>
 #include <from_json.h>
+#include "FluidSimulation.h"
+#include "CudaSystem.h"
 #include "Liquid.cuh"
 
+FluidSimulation fluidSimulation = FluidSimulation();
 
 void UpdateImGui();
 void LoadScene();
 void Update(float deltaTime);
 void Draw(float deltaTime);
 void Destroy();
-
-Vector<FluidParticle> FluidParticleList;
-Vector<FluidParticleInstance> FluidParticleInstanceList;
 
 int main()
 {
@@ -73,12 +73,12 @@ void LoadScene()
 {
     RenderPassLoader renderPassLoader = fileSystem.LoadJsonFile("RenderPass/HdrRenderPass.json").get<RenderPassLoader>();
     levelSystem.LoadRenderPass(renderPassLoader);
-    FluidParticleList = CreateFluidData();
+    fluidSimulation.StartUp(64 * 64);
 }
 
 void Update(float deltaTime)
 {
-    FluidParticleInstanceList = CreateFluidInstanceData(FluidParticleList.data());
+    fluidSimulation.Update(deltaTime);
 }
 
 void Draw(float deltaTime)
@@ -107,6 +107,7 @@ void Destroy()
     materialSystem.Destroy();
     // bufferSystem.DestroyAllBuffers();
     memorySystem.ReportLeaks();
+    cudaSystem.ReportLeaks();
 
     vulkan.Destroy();
     vulkanWindow.Close();

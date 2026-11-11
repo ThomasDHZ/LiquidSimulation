@@ -10,6 +10,15 @@
     <ClCompile Include="SystemClock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FluidSimulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CudaSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CudaError.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -35,9 +44,6 @@
     <CudaCompile Include="Liquid.cu">
       <Filter>Source Files\Cuda</Filter>
     </CudaCompile>
-    <CudaCompile Include="CudaSystem.cu">
-      <Filter>Source Files\Cuda</Filter>
-    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameTimer.h">
@@ -46,14 +52,20 @@
     <ClInclude Include="SystemClock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CudaSystem.cuh">
-      <Filter>Header Files\Cuda</Filter>
-    </ClInclude>
     <ClInclude Include="Liquid.cuh">
       <Filter>Header Files\Cuda</Filter>
     </ClInclude>
     <ClInclude Include="..\..\VulkanEngineCore\External\imgui\backends\imgui_impl_glfw.h">
       <Filter>Header Files\External</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FluidSimulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaError.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

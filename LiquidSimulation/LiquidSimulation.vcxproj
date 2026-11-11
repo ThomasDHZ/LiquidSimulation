@@ -82,17 +82,21 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="CudaSystem.cu" />
     <CudaCompile Include="Liquid.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CudaError.cpp" />
+    <ClCompile Include="CudaSystem.cpp" />
+    <ClCompile Include="FluidSimulation.cpp" />
     <ClCompile Include="FrameTimer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SystemClock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\VulkanEngineCore\External\imgui\backends\imgui_impl_glfw.h" />
-    <ClInclude Include="CudaSystem.cuh" />
+    <ClInclude Include="CudaError.h" />
+    <ClInclude Include="CudaSystem.h" />
+    <ClInclude Include="FluidSimulation.h" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="Liquid.cuh" />
     <ClInclude Include="SystemClock.h" />

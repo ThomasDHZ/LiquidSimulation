@@ -1,6 +1,6 @@
 ﻿#include "Liquid.cuh"
 
-__global__ void CreateFluidDataCuda(FluidParticle* fluidCellList, uint width, uint height)
+__global__ void Cuda_CreateFluidData(FluidParticle* fluidCellList, uint width, uint height)
 {
 	const uint x = blockIdx.x * blockDim.x + threadIdx.x;
 	const uint y = blockIdx.y * blockDim.y + threadIdx.y;
@@ -22,7 +22,7 @@ __global__ void CreateFluidDataCuda(FluidParticle* fluidCellList, uint width, ui
 	}
 }
 
-__global__ void UpdateFluidDataCuda(const FluidParticle* fluidParticleList, FluidParticleInstance* fluidParticleInstanceList, uint width, uint height)
+__global__ void Cuda_UpdateFluidData(const FluidParticle* fluidParticleList, FluidParticleInstance* fluidParticleInstanceList, uint width, uint height)
 {
 	const uint x = blockIdx.x * blockDim.x + threadIdx.x;
 	const uint y = blockIdx.y * blockDim.y + threadIdx.y;
@@ -53,52 +53,23 @@ __global__ void UpdateFluidDataCuda(const FluidParticle* fluidParticleList, Flui
 	}
 }
 
-Vector<FluidParticle> CreateFluidData()
+FluidParticle* CreateFluidData(FluidParticle* fluidParticleCpuList)
 {
-	const int count = 64 * 64;
-	const uint32 size = count * sizeof(FluidParticle);
-
-	FluidParticle* fluidCellCpu = memorySystem.AddPtrBuffer<FluidParticle>(count, __FILE__, __LINE__, __func__);
-
-	FluidParticle* fluidCellGpu = nullptr;
-	cudaMalloc(&fluidCellGpu, count * sizeof(FluidParticle));
-	cudaMemcpy(fluidCellGpu, fluidCellCpu, size, cudaMemcpyHostToDevice);
-
 	dim3 blockSize(16, 16, 1);
 	dim3 gridSize((64 + blockSize.x - 1) / blockSize.x, (64 + blockSize.y - 1) / blockSize.y, 1);
-	CreateFluidDataCuda << <gridSize, blockSize >> > (fluidCellGpu, 64, 64);
-	cudaError_t error = cudaGetLastError();
-	cudaDeviceSynchronize();
+	Cuda_CreateFluidData << <gridSize, blockSize >> > (fluidParticleCpuList, 64, 64);
 
-	cudaMemcpy(fluidCellCpu, fluidCellGpu, size, cudaMemcpyDeviceToHost);
-	Vector<FluidParticle> fluidParticleCopy(fluidCellCpu, fluidCellCpu + count);
-	
-	cudaFree(fluidCellGpu);
-	memorySystem.DeletePtr(fluidCellCpu);
-	return fluidParticleCopy;
+	CUDA_THROW_IF_FAIL(cudaGetLastError());
+	cudaDeviceSynchronize();
+	return fluidParticleCpuList;
 }
 
-Vector<FluidParticleInstance> CreateFluidInstanceData(const FluidParticle* fluidParticalListPtr)
+void UpdateFluidInstanceData(const FluidParticle* fluidParticaGpulListPtr, FluidParticleInstance* fluidParticleInstanceListPtr)
 {
-	const int count = 64 * 64;
-	const uint32 size = count * sizeof(FluidParticleInstance);
-
-	FluidParticleInstance* fluidCellCpu = memorySystem.AddPtrBuffer<FluidParticleInstance>(count, __FILE__, __LINE__, __func__);
-
-	FluidParticleInstance* fluidCellGpu = nullptr;
-	cudaMalloc(&fluidCellGpu, count * sizeof(FluidParticleInstance));
-	cudaMemcpy(fluidCellGpu, fluidCellCpu, size, cudaMemcpyHostToDevice);
-
 	dim3 blockSize(16, 16, 1);
 	dim3 gridSize((64 + blockSize.x - 1) / blockSize.x, (64 + blockSize.y - 1) / blockSize.y, 1);
-	UpdateFluidDataCuda << <gridSize, blockSize >> > (fluidParticalListPtr, fluidCellGpu, 64, 64);
-	cudaError_t error = cudaGetLastError();
+
+	Cuda_UpdateFluidData << <gridSize, blockSize >> > (fluidParticaGpulListPtr, fluidParticleInstanceListPtr, 64, 64);
+	CUDA_THROW_IF_FAIL(cudaGetLastError()); 
 	cudaDeviceSynchronize();
-
-	cudaMemcpy(fluidCellCpu, fluidCellGpu, size, cudaMemcpyDeviceToHost);
-	Vector<FluidParticleInstance> fluidParticleInstanceCopy(fluidCellCpu, fluidCellCpu + count);
-
-	cudaFree(fluidCellGpu);
-	memorySystem.DeletePtr(fluidCellCpu);
-	return Vector<FluidParticleInstance>(fluidCellCpu, fluidCellCpu + count);
 }
