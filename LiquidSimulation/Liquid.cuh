@@ -24,7 +24,8 @@ struct FluidParticleInstance
 	float Density = 0.0f;
 };
 
+__device__ mat4 makeTRS(const vec3& pos, const vec3& rot, const vec3& scale);
 __global__ void Cuda_CreateFluidData(FluidParticle* fluidCellList, uint width, uint height);
 __global__ void Cuda_UpdateFluidData(const FluidParticle* fluidParticleList, FluidParticleInstance* fluidParticleInstanceList, uint width, uint height);
-FluidParticle* CreateFluidData(FluidParticle* fluidParticleGpuList);
-void UpdateFluidInstanceData(const FluidParticle* fluidParticaGpulListPtr, FluidParticleInstance* fluidParticleInstanceListPtr);
+FluidParticle* CreateFluidData(uint32 instanceCount);
+void UpdateFluidInstanceData( FluidParticle* fluidParticaGpulListPtr, FluidParticleInstance* fluidParticleInstanceListPtr);

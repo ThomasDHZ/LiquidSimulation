@@ -3,6 +3,7 @@
 #include <TypeDef.h>
 #include <MemorySystem.h>
 #include <cuda_runtime.h>
+#include "CudaError.h"
 
 class CudaSystem
 {
@@ -45,8 +46,14 @@ public:
     {
         if (count == 0) return nullptr;
 
+        T* cpuData = nullptr;
         T* gpuData = nullptr;
-        cudaMalloc(&gpuData, count * sizeof(T));
+        CUDA_THROW_IF_FAIL(cudaMalloc(&gpuData, count * sizeof(T)));
+
+        cpuData = memorySystem.AddPtrBuffer<T>(count, file, line, func);
+        CUDA_THROW_IF_FAIL(cudaMemcpy(gpuData, cpuData, count * sizeof(T), cudaMemcpyHostToDevice));
+        memorySystem.DeletePtr(cpuData);
+
         TrackAllocation(gpuData, count * sizeof(T), count > 1, file, line, typeid(T).name(), func, "Cuda Ptr");
         return gpuData;
     }
